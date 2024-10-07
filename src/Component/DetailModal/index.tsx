@@ -69,10 +69,12 @@ const styles = StyleSheet.create({
     borderTopRightRadius: vw(10),
   },
   option: {
+
     padding: vw(15),
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderColor: color.underline,
+    
   },
   icon: {
     width: vw(20),

@@ -118,7 +118,16 @@ const styles = StyleSheet.create({
   },
   userlist: {
     borderRadius: vw(40),
+  },
+  noresult:{width:250,height:250},
+  noContactsContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noContactsText: {
+    fontSize: 18,
+    color: color.Dim_Gray
   }
-
 });
 export default styles;

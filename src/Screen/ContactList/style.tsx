@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: "space-between",
     },
+    noresult:{width:250,height:250},
     top:{
      backgroundColor:color.white,
     paddingVertical:vh(15),

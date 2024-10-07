@@ -106,6 +106,19 @@ const styles = StyleSheet.create({
       messageText: {
         color: color.white,
       },
+      emojiAboveMessage: {
+        position: 'absolute',
+        top: vh(-17), 
+        alignSelf: 'center',
+        backgroundColor: color.white,
+        borderRadius: 20,
+        padding: 2,
+        elevation: 2, 
+       
+      },
+      
+      
+      
   });
   
   export default  styles;

@@ -8,10 +8,10 @@ import Chat from '../Chat';
 import string from "../../Utils/string";
 
 interface User {
-  id: number;
+  id: number;            
   firstName: string;
   lastName: string;
-  phone: string;
+  phoneNumber: string;
 }
 
 interface ContactProps {
@@ -26,7 +26,13 @@ const ContactList: React.FC<ContactProps> = ({ navigation, route }) => {
   const [selectedUser, setSelectedUser] = useState<User | null>(route.params?.user || null);
 
   useEffect(() => {
-    const allUsers = usersData.users;
+    const allUsers = usersData.users.map(user => ({
+      id: Number(user.id),    
+      firstName: user.firstName,
+      lastName: user.lastName,
+      phoneNumber: user.phoneNumber,
+    }));
+    
     setUsers(allUsers);
     setFilteredUsers(allUsers);
   }, []);
@@ -64,7 +70,7 @@ const ContactList: React.FC<ContactProps> = ({ navigation, route }) => {
         <Text style={styles.userName}>
           {item.firstName} {item.lastName}
         </Text>
-        <Text style={styles.userPhone}>{item.phone}</Text>
+        <Text style={styles.userPhone}>{item.phoneNumber}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -96,13 +102,13 @@ const ContactList: React.FC<ContactProps> = ({ navigation, route }) => {
             filteredUsers.length > 0 ? (
               <FlatList
                 data={filteredUsers}
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={(item) => item.id.toString()} 
                 renderItem={renderItem}
                 style={styles.userList}
               />
             ) : (
               <View style={styles.noContactsContainer}>
-                <Image style={{width:250,height:250}}source={Icons.noresult}/>
+                <Image style={styles.noresult} source={Icons.noresult} />
                 <Text style={styles.noContactsText}>{string.nocontact}</Text>
               </View>
             )

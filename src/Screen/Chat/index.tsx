@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, TouchableOpacity } from 'react-native';
-import { GiftedChat, IMessage, InputToolbar } from "react-native-gifted-chat";
+import { GiftedChat, IMessage, InputToolbar, Bubble } from "react-native-gifted-chat";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Icons } from '../../Assets';
 import MessageOptionsModal from '../../Component/ChatModal';
@@ -8,11 +8,14 @@ import CustomModal from "../../Component/CustomModal";
 import styles from "./style";
 import DetailOptionsModal from "../../Component/DetailModal";
 import string from "../../Utils/string";
+import color from "../../Theme/color";
+
+
 interface User {
   id: number;
   firstName: string;
   lastName: string;
-  phone: string;
+  phoneNumber: string;
 }
 
 interface ChatProps {
@@ -37,9 +40,9 @@ const Chat: React.FC<ChatProps> = ({ userId, onBack, handleBack, selectedUser })
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState<IMessage | null>(null);
   const [confirmDeleteModalVisible, setConfirmDeleteModalVisible] = useState(false);
-  const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
   const [detailModal, setDetailModal] = useState(false);
   const [confirmDeleteAllModalVisible, setConfirmDeleteAllModalVisible] = useState(false);
+  const [inputText, setInputText] = useState('');
 
   useEffect(() => {
     loadMessages(userId);
@@ -55,23 +58,26 @@ const Chat: React.FC<ChatProps> = ({ userId, onBack, handleBack, selectedUser })
     }
   };
 
+
+
+
+
   const onSend = async (newMessages: IMessage[] = []) => {
+    if(inputText.trim().length===0) return;
     setMessages(previousMessages => {
       const updatedMessages = GiftedChat.append(previousMessages, newMessages);
       saveMessages(userId, updatedMessages);
       return updatedMessages;
     });
 
+    setInputText('');
 
     try {
       const storedChats = await AsyncStorage.getItem('activeChats');
       const activeChats = storedChats ? JSON.parse(storedChats) : [];
-
-
       const isUserAlreadyInChats = activeChats.some(
         (chatUser: User) => chatUser.id === selectedUser.id
       );
-
 
       if (!isUserAlreadyInChats) {
         const updatedChats = [...activeChats, selectedUser];
@@ -119,22 +125,16 @@ const Chat: React.FC<ChatProps> = ({ userId, onBack, handleBack, selectedUser })
   const handleMessageLongPress = (context, message) => {
     setSelectedMessage(message);
     setModalVisible(true);
-
   };
 
   const handleDelete = () => {
-
-
     if (selectedMessage) {
       setModalVisible(false);
       setConfirmDeleteModalVisible(true);
-
     }
-
   };
 
   const confirmDelete = () => {
-
     if (selectedMessage) {
       deleteChat(selectedMessage._id);
       setConfirmDeleteModalVisible(false);
@@ -160,7 +160,8 @@ const Chat: React.FC<ChatProps> = ({ userId, onBack, handleBack, selectedUser })
   };
 
 
-  const renderInputToolbar = (props) => {
+
+  const renderInputToolbar = (props: any) => {
     return (
       <View style={styles.inputToolbarContainer}>
         <TouchableOpacity style={styles.addIconContainer}>
@@ -169,8 +170,13 @@ const Chat: React.FC<ChatProps> = ({ userId, onBack, handleBack, selectedUser })
         <InputToolbar
           {...props}
           containerStyle={[styles.inputToolbar, { borderTopWidth: 0 }]}
+          text={inputText}
+          onTextChanged={(text: string) => setInputText(text)}
         />
-        <TouchableOpacity onPress={() => props.onSend({ text: props.text })}>
+        <TouchableOpacity onPress={() => {
+          props.onSend({ text: inputText });
+          setInputText('');
+        }}>
           <View style={styles.imgContainer}>
             <Image
               source={Icons.send}
@@ -180,6 +186,49 @@ const Chat: React.FC<ChatProps> = ({ userId, onBack, handleBack, selectedUser })
         </TouchableOpacity>
       </View>
     );
+  };
+
+
+
+  const renderBubble = (props: any) => {
+    const { currentMessage } = props;
+    const isDeletedMessage = currentMessage.deletedBy !== undefined;
+    return (
+
+
+      <View style={{ marginBottom: 10 }}>
+        {currentMessage.emoji && (
+          <View style={styles.emojiAboveMessage}>
+            <Text>{currentMessage.emoji}</Text>
+          </View>
+        )}
+        <Bubble
+          {...props}
+          wrapperStyle={{
+            right: {
+              backgroundColor: isDeletedMessage ? color.grey : color.primary,
+              borderTopRightRadius: 0,
+              marginBottom: 10,
+            },
+            left: {
+              backgroundColor: isDeletedMessage ? '#ffcccc' : '#e6e6e6',
+            },
+          }}
+        />
+      </View>
+    );
+  };
+  const handleEmojiSelect = (emoji: string) => {
+    if (selectedMessage) {
+      const updatedMessages = messages.map(message =>
+        message._id === selectedMessage._id
+          ? { ...message, emoji: emoji }
+          : message
+      );
+      setMessages(updatedMessages);
+      setModalVisible(false);
+      saveMessages(userId, updatedMessages);
+    }
   };
 
 
@@ -215,33 +264,25 @@ const Chat: React.FC<ChatProps> = ({ userId, onBack, handleBack, selectedUser })
       </View>
 
       <GiftedChat
-        messages={messages}
+        alignTop={true}
+        messages={messages || []}
         onSend={(newMessages) => onSend(newMessages)}
         user={{ _id: 1, name: "You" }}
         renderInputToolbar={renderInputToolbar}
+        renderBubble={renderBubble}
+        renderSend={() => <></>}
         renderUsernameOnMessage
-
         alwaysShowSend={false}
         onLongPress={(context, message) => handleMessageLongPress(context, message)}
       />
-      {selectedEmoji && (
-        <Text style={styles.emojiDisplay}>{selectedEmoji}</Text>
-      )}
 
 
       <MessageOptionsModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
-        onReply={() => {/* handle reply */ }}
-        onForward={() => {/* handle forward */ }}
-        onCopy={() => {/* handle copy */ }}
-        onStar={() => {/* handle star */ }}
-        onEdit={() => {/* handle edit */ }}
         onDelete={handleDelete}
-        onEmojiSelect={(emoji) => {
-          setSelectedEmoji(emoji);
-          setModalVisible(false);
-        }}
+        onEmojiSelect={
+          handleEmojiSelect}
 
       />
       {detailModal &&

@@ -94,9 +94,12 @@ const styles = StyleSheet.create({
   },
   emojiContainer: {
     paddingBottom: vh(10),
+   
   },
   emojiButton: {
-    padding: vw(10),
+    padding: vw(8),
+    margin:vw(2),
+  
   },
   emojiText: {
     fontSize: 24,
