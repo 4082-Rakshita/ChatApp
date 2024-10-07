@@ -15,6 +15,7 @@
 		179D675B9200BB61D66FDE59 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 0FFA1B662DD4D424329B977C /* PrivacyInfo.xcprivacy */; };
 		7699B88040F8A987B510C191 /* libPods-ChatApp-ChatAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-ChatApp-ChatAppTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		1F9396D3060649CF8D4314CF /* Italianno-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EC5D4F08B49144E98CF99752 /* Italianno-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ChatApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-ChatApp-ChatAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatApp-ChatAppTests.release.xcconfig"; path = "Target Support Files/Pods-ChatApp-ChatAppTests/Pods-ChatApp-ChatAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		EC5D4F08B49144E98CF99752 /* Italianno-Regular.ttf */ = {isa = PBXFileReference; name = "Italianno-Regular.ttf"; path = "../src/Assets/Fonts/Italianno-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +129,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				FC456CEFCF53423297E86D7B /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -152,6 +155,15 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		FC456CEFCF53423297E86D7B /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				EC5D4F08B49144E98CF99752 /* Italianno-Regular.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -249,6 +261,7 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				179D675B9200BB61D66FDE59 /* PrivacyInfo.xcprivacy in Resources */,
+				1F9396D3060649CF8D4314CF /* Italianno-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
